@@ -56,10 +56,6 @@ Set up Database
 Use the application: 
 ![video walkthrough](./assets/functionality.gif)
 
-### Webpage screenshot:
-
-![screenshot](./assets/teamPage.PNG)
-
 ## Test 
 
 screenshot of some options to choose from:
