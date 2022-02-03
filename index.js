@@ -8,6 +8,7 @@ const questions = require('./index');
 const { NONAME } = require('dns');
 const { Console } = require('console');
 
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -25,7 +26,7 @@ const db = mysql.createConnection(
     console.log("Connected to the database")
 );
 const viewDepartments = () => {
-    db.query('SELECT id, name FROM departments', (err, result) => {
+    db.query('SELECT id, name FROM departments ORDER BY id', (err, result) => {
         if(err) {
             throw err
         } console.table(result)
@@ -34,7 +35,7 @@ const viewDepartments = () => {
 }
 const viewRoles = () => {
     db.query(`SELECT departments.id, roles.title, departments.name AS department, roles.salary FROM departments
-    JOIN roles ON departments.id = roles.department_id;`, (err, result) => {
+    JOIN roles ON departments.id = roles.department_id ORDER BY id;`, (err, result) => {
         if(err) {
             throw err
         } console.table(result)
@@ -70,7 +71,7 @@ const addEmployee = () => {
          const roleArr = result.map((role) => {
              return {name: role.title, value: role.id}
          })
-         db.query('SELECT CONCAT(employees.first_name, " ", employees.last_name) AS name, role_id FROM employees', (err, result) => {
+         db.query('SELECT CONCAT(employees.first_name, " ", employees.last_name) AS name, id FROM employees', (err, result) => {
             if(err){
                 throw err;
             }
@@ -104,7 +105,8 @@ const addEmployee = () => {
                 }
             ])
             .then(answer => {
-                const params = [answer.first_name, answer.last_name, answer.roleID, answer.managerID]
+                const params = [answer.first_name, answer.last_name, answer.roleID, answer.managerID];
+                console.log(params)
                 db.query("INSERT INTO employees(first_name, last_name, role_id, manager_id) VAlUES(?, ?, ?, ?)", params, (err, result) => {
                     if(err) {
                         throw err;
@@ -161,7 +163,7 @@ const viewEmployees = () => {
     const query = `SELECT employees.id, employees.first_name, employees.last_name, title AS Job_Title, departments.name AS Department, salary AS Salary, CONCAT(managers.first_name, " ", managers.last_name) AS Manager 
     FROM roles JOIN employees ON roles.id = employees.role_id 
     JOIN departments ON departments.id = roles.department_id 
-    LEFT JOIN employees AS managers ON managers.id = employees.manager_id;`
+    LEFT JOIN employees AS managers ON managers.id = employees.manager_id ORDER BY id;`
     db.query(query, (err, result) => {
         if(err) {
             throw err;
@@ -185,7 +187,6 @@ const updateEmployee = () => {
             const rolesArr = result.map(role => {
                 return {name: role.title, value: role.id}
             })
-            console.log(employeeArr)
             inquirer
             .prompt([
                 {
@@ -207,7 +208,7 @@ const updateEmployee = () => {
                 db.query("UPDATE employees SET role_id = ? WHERE role_id = ?", val, (err, result) => {
                     if(err) {
                         throw err;
-                    } console.table(result)
+                    } 
                     console.log("updated role")
                     start();
                 })
