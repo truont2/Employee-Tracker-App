@@ -73,7 +73,7 @@ const addEmployee = () => {
          db.query('SELECT CONCAT(employees.first_name, " ", employees.last_name) AS name, role_id FROM employees', (err, result) => {
             if(err){
                 throw err;
-            } console.log(result)
+            }
             const employeesArr = result.map((employees) => {
                 return {name: employees.name, value: employees.id}
             })
@@ -108,7 +108,8 @@ const addEmployee = () => {
                 db.query("INSERT INTO employees(first_name, last_name, role_id, manager_id) VAlUES(?, ?, ?, ?)", params, (err, result) => {
                     if(err) {
                         throw err;
-                    } console.table(result)
+                    }
+                    console.log("Employee added!")
                     start();
                 })
             })
@@ -123,7 +124,6 @@ const addRole = () => {
             throw err;
         }
         const departmentArr = result.map((department) => {
-            console.log(department);
             return {name: department.name, value: department.id}
         })
         inquirer
@@ -151,7 +151,7 @@ const addRole = () => {
                db.query("INSERT INTO roles (title, salary, department_id) VAlUES (?, ? , ?)", roleAns, (err, result) => {
                    if(err) {
                        throw err;
-                   } console.table(result)
+                   } console.log('Role Added!')
                    start();
                })
            })
@@ -216,9 +216,6 @@ const updateEmployee = () => {
     })
 }
 
-const quit= () => {
-    
-}
 // put all function on this page first and then start doing classes and whatever
 function start() {
     inquirer 
@@ -267,13 +264,5 @@ function start() {
         })
         .catch(err => console.error(err))
 }
-
-app.use((req,res) => {
-    res.status(404).end();
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-});
 
 start();
