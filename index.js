@@ -28,7 +28,7 @@ const viewDepartments = () => {
     db.query('SELECT id, name FROM departments', (err, result) => {
         if(err) {
             throw err
-        } console.log(result)
+        } console.table(result)
         start();
     })
 }
@@ -73,7 +73,7 @@ const addEmployee = () => {
          db.query('SELECT CONCAT(employees.first_name, " ", employees.last_name) AS name, role_id FROM employees', (err, result) => {
             if(err){
                 throw err;
-            } console.table(result)
+            } console.log(result)
             const employeesArr = result.map((employees) => {
                 return {name: employees.name, value: employees.id}
             })
@@ -217,8 +217,7 @@ const updateEmployee = () => {
 }
 
 const quit= () => {
-    console.log("Have a good day!")
-    db.end();
+    
 }
 // put all function on this page first and then start doing classes and whatever
 function start() {
@@ -261,7 +260,8 @@ function start() {
                     break;
                 
                 default:
-                    quit();
+                    db.end();
+                    console.log("Have a good day!")
                     break;
             }
         })
