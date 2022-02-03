@@ -12,6 +12,7 @@ const { Console } = require('console');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -33,6 +34,8 @@ const viewDepartments = () => {
         start();
     })
 }
+
+// function displays the diffferent roles and departments stored in the database
 const viewRoles = () => {
     db.query(`SELECT departments.id, roles.title, departments.name AS department, roles.salary FROM departments
     JOIN roles ON departments.id = roles.department_id ORDER BY id;`, (err, result) => {
@@ -43,6 +46,7 @@ const viewRoles = () => {
     })
 }
 
+// function allows users to add a department to the department table
 const addDepartment = () => {
     inquirer
         .prompt([
@@ -63,6 +67,7 @@ const addDepartment = () => {
         })
 }
 
+// function prompts users to add an employee and asks the user for the required information to add the employee to the database
 const addEmployee = () => {
      db.query('SELECT * FROM roles', (err,result) => {
          if(err){
@@ -120,6 +125,7 @@ const addEmployee = () => {
      })
 }
 
+// faunction prompts users for what role they want to add and adds the data to the database
 const addRole = () => {
     db.query('SELECT * FROM departments', (err,result) => {
         if(err){
@@ -159,6 +165,8 @@ const addRole = () => {
            })
     })
 }
+
+// function displays all the information on the employees 
 const viewEmployees = () => {
     const query = `SELECT employees.id, employees.first_name, employees.last_name, title AS Job_Title, departments.name AS Department, salary AS Salary, CONCAT(managers.first_name, " ", managers.last_name) AS Manager 
     FROM roles JOIN employees ON roles.id = employees.role_id 
@@ -171,6 +179,8 @@ const viewEmployees = () => {
         start();
     })
 }
+
+// function upodates employee's role reassigning their role id and name
 const updateEmployee = () => {
     db.query('SELECT CONCAT(employees.first_name, " ", employees.last_name) AS name, role_id FROM employees', (err,result) => {
         if(err){
@@ -217,7 +227,7 @@ const updateEmployee = () => {
     })
 }
 
-// put all function on this page first and then start doing classes and whatever
+// Function that initializes the main page inquirer prompt guides the application based on what option chosen.
 function start() {
     inquirer 
         .prompt([
@@ -266,4 +276,24 @@ function start() {
         .catch(err => console.error(err))
 }
 
+// displays main page title
+const CFonts = require('cfonts');
+
+CFonts.say('Employee|Tracker!', {
+	font: 'block',              // define the font face
+	align: 'left',              // define text alignment
+	colors: ['system'],         // define all colors
+	background: 'transparent',  // define the background color, you can also use `backgroundColor` here as key
+	letterSpacing: 1,           // define letter spacing
+	lineHeight: 1,              // define the line height
+	space: true,                // define if the output text should have empty lines on top and on the bottom
+	maxLength: '0',             // define how many character can be on one line
+	gradient: false,            // define your two gradient colors
+	independentGradient: false, // define if you want to recalculate the gradient for each new line
+	transitionGradient: false,  // define if this is a transition between colors directly
+	env: 'node'                 // define the environment CFonts is being executed in
+});
+
+// initialize the initial start menu option
 start();
+

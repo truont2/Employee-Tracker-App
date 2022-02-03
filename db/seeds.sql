@@ -1,3 +1,5 @@
+-- file adds some supplementary data to the database so that there is data present before
+-- can be altered by the user
 INSERT INTO departments(name)
 VALUES("Engineering"),('HR'),('Sales');
 

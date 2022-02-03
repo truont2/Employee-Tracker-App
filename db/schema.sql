@@ -1,8 +1,12 @@
+-- file creates the database for use
+
+-- deletes the database if it already exists to remove any pre-existing data
 DROP DATABASE IF EXISTS company_db;
 CREATE DATABASE company_db;
 
 use company_db;
 
+-- create each table in the database with its sepcified columns
 CREATE TABLE departments (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     name VARCHAR(30)
